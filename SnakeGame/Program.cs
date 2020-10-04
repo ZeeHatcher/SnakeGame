@@ -106,9 +106,12 @@ namespace SnakeGame
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
 
+                food.CheckCollision(snake);
+                food.CountTimer(snake);
+
                 // render the food
                 food.Render();
-
+                
                 // render the snake
                 foreach (Point p in snake)
                 {
