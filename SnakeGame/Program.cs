@@ -52,6 +52,8 @@ namespace SnakeGame
                 }
             }, null, 0, seconds);
 
+            Food food = new Food();
+
             // clear to color
             Console.BackgroundColor = ConsoleColor.DarkGray;
             Console.Clear();
@@ -145,15 +147,12 @@ namespace SnakeGame
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
 
-<<<<<<< HEAD
                 food.CheckCollision(snake);
                 food.CountTimer(snake);
 
                 // render the food
                 food.Render();
                 
-=======
->>>>>>> 75344cdf5490d3a8ef07f1bfab3704371d5cb66e
                 // render the snake
                 foreach (Point p in snake)
                 {
