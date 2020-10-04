@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace SnakeGame
 {
@@ -16,7 +17,7 @@ namespace SnakeGame
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed
 
             // location info & display
-            int x = 0, y = 2; // y is 2 to allow the top row for directions & space
+            Point[] snake = { new Point(0, 2), new Point(0, 2), new Point(0, 2) };
             int dx = 1, dy = 0;
             int consoleWidthLimit = 79;
             int consoleHeightLimit = 24;
@@ -39,7 +40,7 @@ namespace SnakeGame
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.SetCursorPosition(0, 0);
                 Console.WriteLine("Arrows move up/down/right/left. Press 'esc' quit.");
-                Console.SetCursorPosition(x, y);
+                Console.SetCursorPosition(snake[0].X, snake[0].Y);
                 Console.ForegroundColor = cc;
 
                 // see if a key has been pressed
@@ -76,28 +77,37 @@ namespace SnakeGame
                     }
                 }
 
-                // find the current position in the console grid & erase the character there if don't want to see the trail
-                Console.SetCursorPosition(x, y);
+                // find the tail in the console grid & erase the character there if don't want to see the trail
+                Console.SetCursorPosition(snake[snake.Length - 1].X, snake[snake.Length - 1].y);
                 if (trail == false)
                     Console.Write(' ');
 
+                // set position of snake body parts
+                for (int i = snake.Length - 1; i > 0; i--)
+                {
+                    snake[i].SetPoint(snake[i - 1]);
+                }
+
                 // calculate the new position
                 // note x set to 0 because we use the whole width, but y set to 1 because we use top row for instructions
-                x += dx;
-                if (x > consoleWidthLimit)
-                    x = 0;
-                if (x < 0)
-                    x = consoleWidthLimit;
+                snake[0].X += dx;
+                if (snake[0].X > consoleWidthLimit)
+                    snake[0].X = 0;
+                if (snake[0].X < 0)
+                    snake[0].X = consoleWidthLimit;
 
-                y += dy;
-                if (y > consoleHeightLimit)
-                    y = 2; // 2 due to top spaces used for directions
-                if (y < 2)
-                    y = consoleHeightLimit;
+                snake[0].Y += dy;
+                if (snake[0].Y > consoleHeightLimit)
+                    snake[0].Y = 2; // 2 due to top spaces used for directions
+                if (snake[0].Y < 2)
+                    snake[0].Y = consoleHeightLimit;
 
-                // write the character in the new position
-                Console.SetCursorPosition(x, y);
-                Console.Write(ch);
+                // render the snake
+                foreach (Point p in snake)
+                {
+                    Console.SetCursorPosition(p.X, p.Y);
+                    Console.Write(ch);
+                }
 
                 // pause to allow eyeballs to keep up
                 System.Threading.Thread.Sleep(delayInMillisecs);
