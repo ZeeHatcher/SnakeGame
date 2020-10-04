@@ -22,6 +22,10 @@ namespace SnakeGame
             int consoleWidthLimit = 79;
             int consoleHeightLimit = 24;
 
+            // food
+            Food food = new Food();
+            food.Spawn(snake);
+
             // clear to color
             Console.BackgroundColor = ConsoleColor.DarkGray;
             Console.Clear();
@@ -101,6 +105,9 @@ namespace SnakeGame
                     snake[0].Y = 2; // 2 due to top spaces used for directions
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
+
+                // render the food
+                food.Render();
 
                 // render the snake
                 foreach (Point p in snake)
