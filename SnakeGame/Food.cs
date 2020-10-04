@@ -8,7 +8,7 @@ namespace SnakeGame
     {
         private int counter = 0;
 
-        public void Spawn(Point[] snake)
+        public void Spawn(List<Point> snake)
         {
             counter = 0;
 
@@ -25,7 +25,7 @@ namespace SnakeGame
             Console.Write("σ");
         }
 
-        public bool CheckCollision(Point[] snake)
+        public bool CheckCollision(List<Point> snake)
         {
             if (snake[0].X == x && snake[0].Y == y)
             {
@@ -35,7 +35,7 @@ namespace SnakeGame
             return false;
         }
 
-        public void CountTimer(Point[] snake)
+        public void CountTimer(List<Point> snake)
         {
             counter += 1;
             if (counter == 100)

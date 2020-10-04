@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace SnakeGame
@@ -21,7 +22,7 @@ namespace SnakeGame
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed
 
             // location info & display
-            Point[] snake = { new Point(0, 2), new Point(0, 2), new Point(0, 2) };
+            List<Point> snake = new List<Point> { new Point(0, 2), new Point(0, 2), new Point(0, 2) };
             int dx = 1, dy = 0;
             int consoleWidthLimit = 79;
             int consoleHeightLimit = 24;
@@ -124,12 +125,12 @@ namespace SnakeGame
                 }
 
                 // find the tail in the console grid & erase the character there if don't want to see the trail
-                Console.SetCursorPosition(snake[snake.Length - 1].X, snake[snake.Length - 1].Y);
+                Console.SetCursorPosition(snake[snake.Count - 1].X, snake[snake.Count - 1].Y);
                 if (trail == false)
                     Console.Write(' ');
 
                 // set position of snake body parts
-                for (int i = snake.Length - 1; i > 0; i--)
+                for (int i = snake.Count - 1; i > 0; i--)
                 {
                     snake[i].SetPoint(snake[i - 1]);
                 }
@@ -148,7 +149,11 @@ namespace SnakeGame
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
 
-                food.CheckCollision(snake);
+                if (food.CheckCollision(snake))
+                {
+                    snake.Add(new Point(snake[snake.Count - 1]));
+                }
+
                 food.CountTimer(snake);
 
                 // render the food
