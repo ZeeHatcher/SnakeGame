@@ -121,7 +121,7 @@ namespace SnakeGame
                 }
 
                 // find the tail in the console grid & erase the character there if don't want to see the trail
-                Console.SetCursorPosition(snake[snake.Length - 1].X, snake[snake.Length - 1].y);
+                Console.SetCursorPosition(snake[snake.Length - 1].X, snake[snake.Length - 1].Y);
                 if (trail == false)
                     Console.Write(' ');
 
