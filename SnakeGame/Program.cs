@@ -13,6 +13,10 @@ namespace SnakeGame
 
             // display this char on the console during the game
             char ch = '*';
+            //display this char on the console as the obstacle
+            char obstacle = '|';
+            //set the timer to 10 seconds
+            int seconds = 5 * 1000;
             bool gameLive = true;
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed
 
@@ -22,9 +26,31 @@ namespace SnakeGame
             int consoleWidthLimit = 79;
             int consoleHeightLimit = 24;
 
-            // food
-            Food food = new Food();
-            food.Spawn(snake);
+            System.Random random = new System.Random();
+            //create random number for the obstacle within the console
+            int obx = random.Next(consoleWidthLimit);
+            int oby = random.Next(consoleHeightLimit);
+
+            var timer = new System.Threading.Timer((e) =>
+            {//clear the previous obstacle and print the new obstacle in the new location
+                Console.SetCursorPosition(obx, oby);
+                Console.Write(' ');
+                Console.SetCursorPosition(obx + 1, oby);
+                Console.Write(' ');
+                obx = random.Next(consoleWidthLimit);
+                oby = random.Next(2, consoleHeightLimit);
+                foreach (Point p in snake)
+                {
+                    if (p.Y == oby)
+                    {
+                        if (p.X == obx || p.X == obx + 1)
+                        {
+                            obx = random.Next(consoleWidthLimit);
+                            oby = random.Next(2, consoleHeightLimit);
+                        }
+                    }
+                }
+            }, null, 0, seconds);
 
             // clear to color
             Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -54,7 +80,7 @@ namespace SnakeGame
                     consoleKey = Console.ReadKey(true);
                     switch (consoleKey.Key)
                     {
-                      
+
                         case ConsoleKey.UpArrow: //UP
                             dx = 0;
                             dy = -1;
@@ -81,8 +107,21 @@ namespace SnakeGame
                     }
                 }
 
+                //check if the snake touched the obstacle
+                foreach (Point p in snake)
+                {
+                    if (p.Y == oby)
+                    {
+                        if (p.X == obx || p.X == obx + 1)
+                        {
+                            gameLive = false;
+                            break;
+                        }
+                    }
+                }
+
                 // find the tail in the console grid & erase the character there if don't want to see the trail
-                Console.SetCursorPosition(snake[snake.Length - 1].X, snake[snake.Length - 1].y);
+                Console.SetCursorPosition(snake[snake.Length - 1].X, snake[snake.Length - 1].Y);
                 if (trail == false)
                     Console.Write(' ');
 
@@ -106,12 +145,15 @@ namespace SnakeGame
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
 
+<<<<<<< HEAD
                 food.CheckCollision(snake);
                 food.CountTimer(snake);
 
                 // render the food
                 food.Render();
                 
+=======
+>>>>>>> 75344cdf5490d3a8ef07f1bfab3704371d5cb66e
                 // render the snake
                 foreach (Point p in snake)
                 {
@@ -119,11 +161,16 @@ namespace SnakeGame
                     Console.Write(ch);
                 }
 
+                Console.SetCursorPosition(obx, oby);
+                Console.Write(obstacle);
+                Console.SetCursorPosition(obx + 1, oby);
+                Console.Write(obstacle);
+
                 // pause to allow eyeballs to keep up
                 System.Threading.Thread.Sleep(delayInMillisecs);
 
             } while (gameLive);
         }
     }
-    
+
 }

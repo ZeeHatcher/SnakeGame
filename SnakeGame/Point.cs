@@ -8,7 +8,7 @@ namespace SnakeGame
 {
     class Point
     {
-        public int x, y;
+        protected int x, y;
 
         public Point()
             : this(0, 0)
