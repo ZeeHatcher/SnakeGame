@@ -53,6 +53,7 @@ namespace SnakeGame
             }, null, 0, seconds);
 
             Food food = new Food();
+            food.Spawn(snake);
 
             // clear to color
             Console.BackgroundColor = ConsoleColor.DarkGray;

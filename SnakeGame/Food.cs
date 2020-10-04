@@ -25,12 +25,14 @@ namespace SnakeGame
             Console.Write("σ");
         }
 
-        public void CheckCollision(Point[] snake)
+        public bool CheckCollision(Point[] snake)
         {
             if (snake[0].X == x && snake[0].Y == y)
             {
                 Spawn(snake);
+                return true;
             }
+            return false;
         }
 
         public void CountTimer(Point[] snake)
