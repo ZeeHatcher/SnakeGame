@@ -21,6 +21,9 @@ namespace SnakeGame
             bool gameLive = true;
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed
 
+            // score
+            int score = 0;
+
             // location info & display
             List<Point> snake = new List<Point> { new Point(0, 2), new Point(0, 2), new Point(0, 2) };
             int dx = 1, dy = 0;
@@ -152,6 +155,7 @@ namespace SnakeGame
                 if (food.CheckCollision(snake))
                 {
                     snake.Add(new Point(snake[snake.Count - 1]));
+                    score += 1;
                 }
 
                 food.CountTimer(snake);
@@ -165,6 +169,11 @@ namespace SnakeGame
                     Console.SetCursorPosition(p.X, p.Y);
                     Console.Write(ch);
                 }
+
+                // render the score
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.SetCursorPosition(85, 0);
+                Console.Write("Score: " + score);
 
                 Console.SetCursorPosition(obx, oby);
                 Console.Write(obstacle);
