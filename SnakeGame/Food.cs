@@ -34,16 +34,6 @@ namespace SnakeGame
             }
             return false;
         }
-
-        public void CountTimer(List<Point> snake)
-        {
-            counter += 1;
-            if (counter == 100)
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(" ");
-                Spawn(snake);
-            }
-        }
+    
     }
 }

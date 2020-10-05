@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SnakeGame
 {
@@ -17,9 +18,12 @@ namespace SnakeGame
             //display this char on the console as the obstacle
             char obstacle = '|';
             //set the timer to 10 seconds
-            int seconds = 5 * 1000;
+            int seconds = 10 * 1000;
             bool gameLive = true;
-            ConsoleKeyInfo consoleKey; // holds whatever key is pressed
+            ConsoleKeyInfo consoleKey; // holds whatever key is pressed 
+            
+            //end game String (Win or Lose statement)
+            String end_condition = "Game Over";
 
             // score
             int score = 0;
@@ -34,7 +38,8 @@ namespace SnakeGame
             //create random number for the obstacle within the console
             int obx = random.Next(consoleWidthLimit);
             int oby = random.Next(consoleHeightLimit);
-
+            Food food = new Food();
+           
             var timer = new System.Threading.Timer((e) =>
             {//clear the previous obstacle and print the new obstacle in the new location
                 Console.SetCursorPosition(obx, oby);
@@ -43,6 +48,9 @@ namespace SnakeGame
                 Console.Write(' ');
                 obx = random.Next(consoleWidthLimit);
                 oby = random.Next(2, consoleHeightLimit);
+
+                //if the newly generated random position clashes with the snake
+                //generate a new position
                 foreach (Point p in snake)
                 {
                     if (p.Y == oby)
@@ -54,17 +62,26 @@ namespace SnakeGame
                         }
                     }
                 }
-            }, null, 0, seconds);
 
-            Food food = new Food();
-            food.Spawn(snake);
+                //checks if the previous food is "eaten" by the snake
+                //if not, the food will be cleared and a new food would be spawned
+                if (!food.CheckCollision(snake))
+                {
+                    Console.SetCursorPosition(food.X, food.Y);
+                    Console.Write(' ');                  
+                }
 
+                //Spawns food object
+                food.Spawn(snake);
+            }, null, 0, seconds);                
+
+      
             // clear to color
             Console.BackgroundColor = ConsoleColor.DarkGray;
             Console.Clear();
 
             // delay to slow down the character movement so you can see it
-            int delayInMillisecs = 50;
+            int delayInMillisecs = 100;
 
             // whether to keep trails
             bool trail = false;
@@ -127,6 +144,14 @@ namespace SnakeGame
                     }
                 }
 
+                //check winning condition
+                if (score >= 20)
+                {
+                    end_condition = "You Win!";
+                    gameLive = false;
+                    break;
+                }
+
                 // find the tail in the console grid & erase the character there if don't want to see the trail
                 Console.SetCursorPosition(snake[snake.Count - 1].X, snake[snake.Count - 1].Y);
                 if (trail == false)
@@ -158,7 +183,6 @@ namespace SnakeGame
                     score += 1;
                 }
 
-                food.CountTimer(snake);
 
                 // render the food
                 food.Render();
@@ -184,6 +208,17 @@ namespace SnakeGame
                 System.Threading.Thread.Sleep(delayInMillisecs);
 
             } while (gameLive);
+                //Stop the timer
+                timer.Dispose();
+                //Write an end game screen in the middle
+                Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2);
+                // Write string depending if you lose or win
+                Console.WriteLine(end_condition);
+                //display the score
+                Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2 + 2);
+                Console.WriteLine("Your Score is: " + score);
+                Console.ReadKey();
+            
         }
     }
 
