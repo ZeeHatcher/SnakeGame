@@ -77,7 +77,7 @@ namespace SnakeGame
 
       
             // clear to color
-            Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.BackgroundColor = ConsoleColor.White;
             Console.Clear();
 
             // delay to slow down the character movement so you can see it
