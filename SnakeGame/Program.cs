@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Security.Cryptography.X509Certificates;
 
 namespace SnakeGame
@@ -9,6 +10,8 @@ namespace SnakeGame
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
+
             // start game
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
@@ -18,10 +21,14 @@ namespace SnakeGame
             //set the timer to 10 seconds
             int seconds = 10 * 1000;
             bool gameLive = true;
+            bool gamePause = false;
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed 
             
             //end game String (Win or Lose statement)
             String end_condition = "Game Over";
+
+            // pause game string
+            string[] pauseMessage = new string[3] { "Paused!", "Press any key to resume", "Press ESC to quit" };
 
             // score
             int score = 0;
@@ -93,7 +100,6 @@ namespace SnakeGame
                 Console.SetCursorPosition(0, 0);
                 Console.WriteLine("Arrows move up/down/right/left. Press 'esc' quit.");
                 Console.SetCursorPosition(snake[0].X, snake[0].Y);
-                Console.ForegroundColor = cc;
 
                 // see if a key has been pressed
                 if (Console.KeyAvailable)
@@ -120,7 +126,7 @@ namespace SnakeGame
                             dy = 0;
                             break;
                         case ConsoleKey.Escape: //END
-                            gameLive = false;
+                            gamePause = true;
                             break;
                     }
                 }
@@ -199,6 +205,37 @@ namespace SnakeGame
 
                 // pause to allow eyeballs to keep up
                 System.Threading.Thread.Sleep(delayInMillisecs);
+
+                while (gamePause)
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    for (int i = 0; i < pauseMessage.Length; i++)
+                    {
+                        Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2 + (2 * i));
+                        Console.WriteLine(pauseMessage[i]);
+                    }
+
+                    if (Console.KeyAvailable)
+                    {
+                        consoleKey = Console.ReadKey(true);
+                        switch (consoleKey.Key)
+                        {
+                            case ConsoleKey.Escape:
+                                gameLive = false;
+                                gamePause = false;
+                                break;
+
+                            default:
+                                gamePause = false;
+                                break;
+                        }
+
+                        Console.Clear();
+                    }
+                }
+
+                Console.ForegroundColor = cc;
 
             } while (gameLive);
                 //Stop the timer
