@@ -13,8 +13,6 @@ namespace SnakeGame
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 
-            // display this char on the console during the game
-            char ch = '*';
             //display this char on the console as the obstacle
             char obstacle = '|';
             //set the timer to 10 seconds
@@ -77,7 +75,7 @@ namespace SnakeGame
 
       
             // clear to color
-            Console.BackgroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
 
             // delay to slow down the character movement so you can see it
@@ -91,7 +89,7 @@ namespace SnakeGame
                 // print directions at top, then restore position
                 // save then restore current color
                 ConsoleColor cc = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.SetCursorPosition(0, 0);
                 Console.WriteLine("Arrows move up/down/right/left. Press 'esc' quit.");
                 Console.SetCursorPosition(snake[0].X, snake[0].Y);
@@ -108,22 +106,18 @@ namespace SnakeGame
                         case ConsoleKey.UpArrow: //UP
                             dx = 0;
                             dy = -1;
-                            Console.ForegroundColor = ConsoleColor.Red;
                             break;
                         case ConsoleKey.DownArrow: // DOWN
                             dx = 0;
                             dy = 1;
-                            Console.ForegroundColor = ConsoleColor.Cyan;
                             break;
                         case ConsoleKey.LeftArrow: //LEFT
                             dx = -1;
                             dy = 0;
-                            Console.ForegroundColor = ConsoleColor.Green;
                             break;
                         case ConsoleKey.RightArrow: //RIGHT
                             dx = 1;
                             dy = 0;
-                            Console.ForegroundColor = ConsoleColor.Black;
                             break;
                         case ConsoleKey.Escape: //END
                             gameLive = false;
@@ -190,8 +184,7 @@ namespace SnakeGame
                 // render the snake
                 foreach (Point p in snake)
                 {
-                    Console.SetCursorPosition(p.X, p.Y);
-                    Console.Write(ch);
+                    p.Render();
                 }
 
                 // render the score

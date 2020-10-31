@@ -44,5 +44,12 @@ namespace SnakeGame
             this.x = point.x;
             this.y = point.y;
         }
+
+        public virtual void Render()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(x, y);
+            Console.Write("*");
+        }
     }
 }

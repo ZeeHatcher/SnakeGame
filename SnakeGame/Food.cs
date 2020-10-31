@@ -18,7 +18,8 @@ namespace SnakeGame
             y = random.Next(2, 24);
         }
 
-        public void Render()
+        
+        public override void Render()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(x, y);
