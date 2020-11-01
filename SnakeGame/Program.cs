@@ -125,6 +125,7 @@ namespace SnakeGame
 
             Food food = new Food(ConsoleColor.Red);
             Food specialFood = new Food(ConsoleColor.Yellow);
+            Food saviour = new Food(ConsoleColor.Blue);
             //Spawns the food object
             //food.Spawn(snake);
             //specialFood.Spawn(snake
@@ -186,9 +187,16 @@ namespace SnakeGame
                     Console.Write(' ');
                 }
 
+                if (!saviour.CheckCollision(snake))
+                {
+                    Console.SetCursorPosition(saviour.X, saviour.Y);
+                    Console.Write(' ');
+                }
+
                 //spawn the food object
                 food.Spawn(snake);
                 specialFood.Spawn(snake);
+                saviour.Spawn(snake);
             }
 
             do // until escape
@@ -370,10 +378,18 @@ namespace SnakeGame
                     delayInMillisecs = Math.Max(10, delayInMillisecs - 10);
                 }
 
+                if (saviour.CheckCollision(snake))
+                {
+                    snake.Add(new Point(snake[snake.Count - 1]));
+                    life += 1;
+                    score += 3;
+                }
+
 
                 // render the food
                 food.Render();
                 specialFood.Render();
+                saviour.Render();
                 
                 // render the snake
                 foreach (Point p in snake)
