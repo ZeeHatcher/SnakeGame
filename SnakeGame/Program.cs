@@ -98,7 +98,7 @@ namespace SnakeGame
 
             //score threshold
             int limit = 2;
-            int life = 3;
+            int life = 1;
             Dictionary<int, int> obstacles = new Dictionary<int, int>();
 
             bool gamePause = false;
