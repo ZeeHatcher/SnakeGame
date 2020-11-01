@@ -31,7 +31,7 @@ namespace SnakeGame
             Console.SetWindowSize(consoleWidthLimit + 2, consoleHeightLimit + 2);
 
             string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
-            string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with three lives.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you lose all three lives.";
+            string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with three lives.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nGreen food heals you and gives you points when you are at max health\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you lose all three lives.";
 
             // main menu loop
             bool startGame = false;
@@ -125,7 +125,7 @@ namespace SnakeGame
 
             Food food = new Food(ConsoleColor.Red);
             Food specialFood = new Food(ConsoleColor.Yellow);
-            Food saviour = new Food(ConsoleColor.Blue);
+            Food saviour = new Food(ConsoleColor.Green);
             //Spawns the food object
             //food.Spawn(snake);
             //specialFood.Spawn(snake
@@ -381,8 +381,14 @@ namespace SnakeGame
                 if (saviour.CheckCollision(snake))
                 {
                     snake.Add(new Point(snake[snake.Count - 1]));
-                    life += 1;
-                    score += 3;
+                    if (life < 3)
+                    {
+                        life += 1;
+                    }
+                    else
+                    {
+                        score += 1;
+                    }
                 }
 
 
