@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualBasic.CompilerServices;
-=======
 using System.Media;
 using System.Reflection;
->>>>>>> 042742893e9ad12243359630d7087bd833188578
 
 namespace SnakeGame
 {
@@ -27,6 +24,10 @@ namespace SnakeGame
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 
+            // clear to color
+            //Console.BackgroundColor = ConsoleColor.Black;
+            //Console.Clear();
+
             menuSoundPlayer.Play();
 
             //display this char on the console as the obstacle
@@ -34,25 +35,24 @@ namespace SnakeGame
             //set the timer to 10 seconds
             int seconds = 10 * 1000;
             bool gameLive = true;
-<<<<<<< HEAD
+
             //score threshold
             int limit = 2;
+            int life = 3;
             Dictionary<int, int> obstacles = new Dictionary<int, int>();
-=======
+
             bool gamePause = false;
->>>>>>> 042742893e9ad12243359630d7087bd833188578
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed 
             //end game String (Win or Lose statement)
             String end_condition = "Game Over";
-<<<<<<< HEAD
+
             //initial score
-=======
+
 
             // pause game string
             string[] pauseMessage = new string[3] { "Paused!", "Press any key to resume", "Press ESC to quit" };
 
             // score
->>>>>>> 042742893e9ad12243359630d7087bd833188578
             int score = 0;
 
             // location info & display
@@ -60,24 +60,33 @@ namespace SnakeGame
             int dx = 1, dy = 0;
             int consoleWidthLimit = 79;
             int consoleHeightLimit = 24;
+            Console.SetWindowSize(consoleWidthLimit+2, consoleHeightLimit+2);
 
             System.Random random = new System.Random();
             //create random number for the obstacle within the console
-            int obx = random.Next(consoleWidthLimit);
-<<<<<<< HEAD
+            //minus the width limit by 1 for space for the second character of the obstacle
+            int obx = random.Next(consoleWidthLimit-1);
             int oby = random.Next(2, consoleHeightLimit);
             obstacles.Add(obx, oby);
-            Food food = new Food();
 
-=======
-            int oby = random.Next(consoleHeightLimit);
             Food food = new Food(ConsoleColor.Red);
             Food specialFood = new Food(ConsoleColor.Yellow);
-           
->>>>>>> 042742893e9ad12243359630d7087bd833188578
-            var timer = new System.Threading.Timer((e) =>
+            //Spawns the food object
+            //food.Spawn(snake);
+            //specialFood.Spawn(snake
+
+            var timer = new System.Threading.Timer(state=>ChangePositions(), null, 0, seconds);
+
+            // delay to slow down the character movement so you can see it
+            int delayInMillisecs = 100;
+
+            // whether to keep trails
+            bool trail = false;
+
+            //function called by timer to change the positions of obstacles, food as well as special food
+            void ChangePositions()
             {
-                //clear the previous obstacle and print the new obstacle in the new location
+                //loop through the dictionary to clear all the obstacles
                 foreach (KeyValuePair<int, int> i in obstacles.ToArray())
                 {
                     Console.SetCursorPosition(i.Key, i.Value);
@@ -97,14 +106,15 @@ namespace SnakeGame
                     {
                         while (p.X == x || p.X == x + 1 || obstacles.ContainsKey(x))
                         {
-                            x = random.Next(consoleWidthLimit);
+                            x = random.Next(consoleWidthLimit - 1);
                         }
 
                         while (p.Y == y)
                         {
-                            y = random.Next(2, consoleWidthLimit);
+                            y = random.Next(2, consoleHeightLimit);
                         }
                     }
+                    //replace the old positions with new positions
                     obstacles.Add(x, y);
                 }
 
@@ -119,34 +129,19 @@ namespace SnakeGame
                 if (!specialFood.CheckCollision(snake))
                 {
                     Console.SetCursorPosition(specialFood.X, specialFood.Y);
-                    Console.Write(' ');                  
+                    Console.Write(' ');
                 }
 
-                //Spawns food object
+                //spawn the food object
                 food.Spawn(snake);
-<<<<<<< HEAD
-            }, null, 0, seconds);
-
-=======
                 specialFood.Spawn(snake);
-            }, null, 0, seconds);                
->>>>>>> 042742893e9ad12243359630d7087bd833188578
-
-            // clear to color
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.Clear();
-
-            // delay to slow down the character movement so you can see it
-            int delayInMillisecs = 100;
-
-            // whether to keep trails
-            bool trail = false;
+            }
 
             do // until escape
             {
                 // print directions at top, then restore position
                 // save then restore current color
-                ConsoleColor cc = Console.ForegroundColor;
+                ConsoleColor cc = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.SetCursorPosition(0, 0);
                 Console.WriteLine("Arrows move up/down/right/left. Press 'esc' quit.");
@@ -191,52 +186,62 @@ namespace SnakeGame
                     }
                 }
 
-<<<<<<< HEAD
                 //check if the snake touched the obstacle
                 foreach (Point p in snake)
                 {
-                    foreach (KeyValuePair<int, int> i in obstacles)
+                    foreach (KeyValuePair<int, int> i in obstacles.ToArray())
                     {
                         if (p.Y == i.Value)
                         {
                             if (p.X == i.Key || p.X == i.Key + 1)
                             {
-                                gameLive = false;
-                                break;
+                                life -= 1;
+                                if (life == 0)
+                                {
+                                    end_condition = "You suffocated in the obstacles!";
+                                }
+                                hitSoundPlayer.Play();
+                                ChangePositions();
                             }
                         }
                     }
 
                 }
 
+                if(life == 0)
+                {
+                    gameLive = false;
+                    break;
+                }
+
                 if (score >= limit)
                 {
-                    int x = random.Next(consoleWidthLimit);
+                    int x = random.Next(consoleWidthLimit-1);
                     int y = random.Next(2, consoleHeightLimit);
 
                     foreach (Point p in snake)
                     {
                         while (p.X == x || p.X == x + 1 || obstacles.ContainsKey(x))
                         {
-                            x = random.Next(consoleWidthLimit);
+                            x = random.Next(consoleWidthLimit-1);
                         }
 
                         while (p.Y == y)
                         {
-                            y = random.Next(2, consoleWidthLimit);
+                            y = random.Next(2, consoleHeightLimit);
                         }
                      }
                 
                 obstacles.Add(x, y);
 
                 limit += 3;
-                if ((delayInMillisecs - 30) > 10)
+                if ((delayInMillisecs - 10) > 20)
                 {
-                    delayInMillisecs -= 30;
+                    delayInMillisecs -= 10;
                 }
                 else
                 {
-                    delayInMillisecs = 10;
+                    delayInMillisecs = 20;
                 }
             }
 
@@ -249,8 +254,6 @@ namespace SnakeGame
                     break;
                 }
 
-=======
->>>>>>> 042742893e9ad12243359630d7087bd833188578
                 // find the tail in the console grid & erase the character there if don't want to see the trail
                 Console.SetCursorPosition(snake[snake.Count - 1].X, snake[snake.Count - 1].Y);
                 if (trail == false)
@@ -276,29 +279,18 @@ namespace SnakeGame
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
 
-                //check if the snake touched the obstacle
+                //check if the snake touched its body parts
                 foreach (Point p in snake)
                 {
                     if (p != snake[0] && p.Y == snake[0].Y && p.X == snake[0].X)
                     {
                         gameLive = false;
                         hitSoundPlayer.Play();
-                        break;
-                    }
-                }
-
-
-                //check if the snake touched the obstacle
-                foreach (Point p in snake)
-                {
-                    if (p.Y == oby)
-                    {
-                        if (p.X == obx || p.X == obx + 1)
+                        if (life == 0)
                         {
-                            gameLive = false;
-                            hitSoundPlayer.Play();
-                            break;
+                            end_condition = "You tried to eat yourself!";
                         }
+                        break;
                     }
                 }
 
@@ -337,11 +329,16 @@ namespace SnakeGame
 
                 // render the score
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.SetCursorPosition(85, 0);
+                Console.SetCursorPosition(consoleWidthLimit / 4*3, 0);
                 Console.Write("Score: " + score);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.SetCursorPosition(consoleWidthLimit / 4*3+10, 0);
+                Console.Write("Life: " + life);
 
                 foreach (KeyValuePair<int, int> i in obstacles.ToArray())
                 {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.SetCursorPosition(i.Key, i.Value);
                     Console.Write(obstacle);
                     Console.SetCursorPosition(i.Key + 1, i.Value);
@@ -357,7 +354,7 @@ namespace SnakeGame
 
                     for (int i = 0; i < pauseMessage.Length; i++)
                     {
-                        Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2 + (2 * i));
+                        Console.SetCursorPosition(consoleWidthLimit / 3, consoleHeightLimit / 2 + (2 * i));
                         Console.WriteLine(pauseMessage[i]);
                     }
 
@@ -388,11 +385,11 @@ namespace SnakeGame
             //Stop the timer
             timer.Dispose();
             //Write an end game screen in the middle
-            Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2);
+            Console.SetCursorPosition(consoleWidthLimit / 3, consoleHeightLimit / 2);
             // Write string depending if you lose or win
             Console.WriteLine(end_condition);
             //display the score
-            Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2 + 2);
+            Console.SetCursorPosition(consoleWidthLimit / 3, consoleHeightLimit / 2 + 2);
             Console.WriteLine("Your Score is: " + score);
             Console.ReadKey();
             
