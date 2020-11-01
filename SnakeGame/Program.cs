@@ -65,7 +65,6 @@ namespace SnakeGame
                                 line = sr.ReadLine();
                             }
                             sr.Close();
-                            Console.ReadLine();
                         }
                         catch (Exception e)
                         {
