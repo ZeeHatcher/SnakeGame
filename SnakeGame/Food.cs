@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Media;
 using System.Reflection;
 
@@ -8,12 +9,20 @@ namespace SnakeGame
     class Food : Point
     {
         private int counter = 0;
+        private ConsoleColor color;
         SoundPlayer soundPlayer;
 
         public Food()
             : base()
         {
+            color = ConsoleColor.White;
             soundPlayer = new SoundPlayer(Assembly.GetExecutingAssembly().GetManifestResourceStream("SnakeGame.pickup_normal.wav"));
+        }
+
+        public Food(ConsoleColor color)
+            : this()
+        {
+            this.color = color;
         }
 
         public void Spawn(List<Point> snake)
@@ -29,7 +38,7 @@ namespace SnakeGame
         
         public override void Render()
         {
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = color;
             Console.SetCursorPosition(x, y);
             Console.Write("σ");
         }

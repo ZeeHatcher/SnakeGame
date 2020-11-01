@@ -48,7 +48,8 @@ namespace SnakeGame
             //create random number for the obstacle within the console
             int obx = random.Next(consoleWidthLimit);
             int oby = random.Next(consoleHeightLimit);
-            Food food = new Food();
+            Food food = new Food(ConsoleColor.Red);
+            Food specialFood = new Food(ConsoleColor.Yellow);
            
             var timer = new System.Threading.Timer((e) =>
             {//clear the previous obstacle and print the new obstacle in the new location
@@ -81,8 +82,15 @@ namespace SnakeGame
                     Console.Write(' ');                  
                 }
 
+                if (!specialFood.CheckCollision(snake))
+                {
+                    Console.SetCursorPosition(specialFood.X, specialFood.Y);
+                    Console.Write(' ');                  
+                }
+
                 //Spawns food object
                 food.Spawn(snake);
+                specialFood.Spawn(snake);
             }, null, 0, seconds);                
 
       
@@ -190,9 +198,18 @@ namespace SnakeGame
                     score += 1;
                 }
 
+                if (specialFood.CheckCollision(snake))
+                {
+                    snake.Add(new Point(snake[snake.Count - 1]));
+                    score += 2;
+
+                    delayInMillisecs = Math.Max(10, delayInMillisecs - 10);
+                }
+
 
                 // render the food
                 food.Render();
+                specialFood.Render();
                 
                 // render the snake
                 foreach (Point p in snake)
@@ -246,16 +263,17 @@ namespace SnakeGame
                 Console.ForegroundColor = cc;
 
             } while (gameLive);
-                //Stop the timer
-                timer.Dispose();
-                //Write an end game screen in the middle
-                Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2);
-                // Write string depending if you lose or win
-                Console.WriteLine(end_condition);
-                //display the score
-                Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2 + 2);
-                Console.WriteLine("Your Score is: " + score);
-                Console.ReadKey();
+
+            //Stop the timer
+            timer.Dispose();
+            //Write an end game screen in the middle
+            Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2);
+            // Write string depending if you lose or win
+            Console.WriteLine(end_condition);
+            //display the score
+            Console.SetCursorPosition(consoleWidthLimit / 2, consoleHeightLimit / 2 + 2);
+            Console.WriteLine("Your Score is: " + score);
+            Console.ReadKey();
             
         }
     }
