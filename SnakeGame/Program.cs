@@ -7,6 +7,8 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualBasic.CompilerServices;
 using System.Media;
 using System.Reflection;
+using System.IO;
+using System.Text;
 
 namespace SnakeGame
 {
@@ -42,6 +44,7 @@ namespace SnakeGame
                 }
 
                 consoleKey = Console.ReadKey(true);
+
                 menuSoundPlayer.Play();
                 Console.Clear();
 
@@ -51,10 +54,26 @@ namespace SnakeGame
                         StartGame();
                         break;
                     case ConsoleKey.D2:
-                        // implement High score
+                        Console.WriteLine("--HIGHSCORE BOARD--");
+                        try
+                        {
+                            StreamReader sr = new StreamReader("highscore.txt");
+                            String line = sr.ReadLine();
+                            while (line != null)
+                            {
+                                Console.WriteLine(line);
+                                line = sr.ReadLine();
+                            }
+                            sr.Close();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("No scores available currently.");
+                        }
+                        Console.WriteLine("Press any key to return back to the main menu.");
+                        Console.ReadKey();
                         break;
                     case ConsoleKey.D3:
-                        Console.Clear();
                         Console.WriteLine(helpText);
                         Console.SetCursorPosition(0, consoleHeightLimit);
                         Console.WriteLine("Press any key to return back to the main menu.");
@@ -417,6 +436,21 @@ namespace SnakeGame
 
             } while (gameLive);
 
+            //Save the result
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("Enter your name: ");
+            String Name = Console.ReadLine();
+            try
+            {
+                StreamWriter sw = new StreamWriter("highscore.txt", true, Encoding.ASCII);
+                sw.WriteLine(Name + ": " + score);
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Missing highscore.txt file.");
+            }
             //Stop the timer
             timer.Dispose();
             //Write an end game screen in the middle
