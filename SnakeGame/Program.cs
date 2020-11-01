@@ -123,18 +123,26 @@ namespace SnakeGame
                     {
 
                         case ConsoleKey.UpArrow: //UP
+                            if (dy == 1) break;
+
                             dx = 0;
                             dy = -1;
                             break;
                         case ConsoleKey.DownArrow: // DOWN
+                            if (dy == -1) break;
+
                             dx = 0;
                             dy = 1;
                             break;
                         case ConsoleKey.LeftArrow: //LEFT
+                            if (dx == 1) break;
+
                             dx = -1;
                             dy = 0;
                             break;
                         case ConsoleKey.RightArrow: //RIGHT
+                            if (dx == -1) break;
+
                             dx = 1;
                             dy = 0;
                             break;
@@ -143,28 +151,6 @@ namespace SnakeGame
                             menuSoundPlayer.Play();
                             break;
                     }
-                }
-
-                //check if the snake touched the obstacle
-                foreach (Point p in snake)
-                {
-                    if (p.Y == oby)
-                    {
-                        if (p.X == obx || p.X == obx + 1)
-                        {
-                            gameLive = false;
-                            hitSoundPlayer.Play();
-                            break;
-                        }
-                    }
-                }
-
-                //check winning condition
-                if (score >= 20)
-                {
-                    end_condition = "You Win!";
-                    gameLive = false;
-                    break;
                 }
 
                 // find the tail in the console grid & erase the character there if don't want to see the trail
@@ -191,6 +177,40 @@ namespace SnakeGame
                     snake[0].Y = 2; // 2 due to top spaces used for directions
                 if (snake[0].Y < 2)
                     snake[0].Y = consoleHeightLimit;
+
+                //check if the snake touched the obstacle
+                foreach (Point p in snake)
+                {
+                    if (p != snake[0] && p.Y == snake[0].Y && p.X == snake[0].X)
+                    {
+                        gameLive = false;
+                        hitSoundPlayer.Play();
+                        break;
+                    }
+                }
+
+
+                //check if the snake touched the obstacle
+                foreach (Point p in snake)
+                {
+                    if (p.Y == oby)
+                    {
+                        if (p.X == obx || p.X == obx + 1)
+                        {
+                            gameLive = false;
+                            hitSoundPlayer.Play();
+                            break;
+                        }
+                    }
+                }
+
+                //check winning condition
+                if (score >= 20)
+                {
+                    end_condition = "You Win!";
+                    gameLive = false;
+                    break;
+                }
 
                 if (food.CheckCollision(snake))
                 {
