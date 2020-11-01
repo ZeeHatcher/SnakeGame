@@ -43,10 +43,11 @@ namespace SnakeGame
 
                 consoleKey = Console.ReadKey(true);
                 menuSoundPlayer.Play();
+                Console.Clear();
+
                 switch (consoleKey.Key)
                 {
                     case ConsoleKey.D1:
-                        Console.Clear();
                         StartGame();
                         break;
                     case ConsoleKey.D2:
