@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Media;
+using System.Reflection;
 
 namespace SnakeGame
 {
     class Food : Point
     {
         private int counter = 0;
+        SoundPlayer soundPlayer;
+
+        public Food()
+            : base()
+        {
+            soundPlayer = new SoundPlayer(Assembly.GetExecutingAssembly().GetManifestResourceStream("SnakeGame.pickup_normal.wav"));
+        }
 
         public void Spawn(List<Point> snake)
         {
@@ -31,6 +39,7 @@ namespace SnakeGame
             if (snake[0].X == x && snake[0].Y == y)
             {
                 Spawn(snake);
+                soundPlayer.Play();
                 return true;
             }
             return false;

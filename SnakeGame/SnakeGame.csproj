@@ -5,4 +5,22 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="hit.wav" />
+    <None Remove="menu.wav" />
+    <None Remove="pickup_normal.wav" />
+    <None Remove="pickup_special.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="hit.wav" />
+    <EmbeddedResource Include="menu.wav" />
+    <EmbeddedResource Include="pickup_normal.wav" />
+    <EmbeddedResource Include="pickup_special.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Windows.Extensions" Version="4.7.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
+using System.Media;
+using System.Reflection;
 
 namespace SnakeGame
 {
@@ -12,9 +11,15 @@ namespace SnakeGame
         {
             Console.CursorVisible = false;
 
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            SoundPlayer menuSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.menu.wav"));
+            SoundPlayer hitSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.hit.wav"));
+
             // start game
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
+
+            menuSoundPlayer.Play();
 
             //display this char on the console as the obstacle
             char obstacle = '|';
@@ -127,6 +132,7 @@ namespace SnakeGame
                             break;
                         case ConsoleKey.Escape: //END
                             gamePause = true;
+                            menuSoundPlayer.Play();
                             break;
                     }
                 }
@@ -139,6 +145,7 @@ namespace SnakeGame
                         if (p.X == obx || p.X == obx + 1)
                         {
                             gameLive = false;
+                            hitSoundPlayer.Play();
                             break;
                         }
                     }
@@ -231,6 +238,7 @@ namespace SnakeGame
                                 break;
                         }
 
+                        menuSoundPlayer.Play();
                         Console.Clear();
                     }
                 }
