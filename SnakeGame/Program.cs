@@ -14,19 +14,20 @@ namespace SnakeGame
 {
     class Program
     {
+        private static int consoleWidthLimit = 79;
+        private static int consoleHeightLimit = 24;
+        private static ConsoleKeyInfo consoleKey; // holds whatever key is pressed
+        private static SoundPlayer menuSoundPlayer, hitSoundPlayer;
+
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
-            SoundPlayer menuSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.menu.wav"));
-            SoundPlayer hitSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.hit.wav"));
-
-            ConsoleKeyInfo consoleKey; // holds whatever key is pressed 
+            menuSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.menu.wav"));
+            hitSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.hit.wav"));
 
             // set console size
-            int consoleWidthLimit = 79;
-            int consoleHeightLimit = 24;
             Console.SetWindowSize(consoleWidthLimit + 2, consoleHeightLimit + 2);
 
             string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
@@ -43,11 +44,14 @@ namespace SnakeGame
                 }
 
                 consoleKey = Console.ReadKey(true);
+
+                menuSoundPlayer.Play();
                 Console.Clear();
+
                 switch (consoleKey.Key)
                 {
                     case ConsoleKey.D1:
-                        startGame = true;
+                        StartGame();
                         break;
                     case ConsoleKey.D2:
                         Console.WriteLine("--HIGHSCORE BOARD--");
@@ -80,11 +84,13 @@ namespace SnakeGame
                         Environment.Exit(0);
                         break;
                 }
+
                 Console.Clear();
             }
+        }
 
-            menuSoundPlayer.Play();
-
+        private static void StartGame()
+        {
             //display this char on the console as the obstacle
             char obstacle = '|';
             //set the timer to 10 seconds
@@ -333,7 +339,7 @@ namespace SnakeGame
                 {
                     if (p != snake[0] && p.Y == snake[0].Y && p.X == snake[0].X)
                     {
-                        gameLive = false;
+                        life--;
                         hitSoundPlayer.Play();
                         if (life == 0)
                         {
@@ -456,7 +462,6 @@ namespace SnakeGame
             Console.SetCursorPosition(consoleWidthLimit / 3, consoleHeightLimit / 2 + 2);
             Console.WriteLine("Your Score is: " + score);
             Console.ReadKey();
-            
         }
     
     }
