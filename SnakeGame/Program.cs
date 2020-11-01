@@ -20,13 +20,48 @@ namespace SnakeGame
             SoundPlayer menuSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.menu.wav"));
             SoundPlayer hitSoundPlayer = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGame.hit.wav"));
 
-            // start game
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            ConsoleKeyInfo consoleKey; // holds whatever key is pressed 
 
-            // clear to color
-            //Console.BackgroundColor = ConsoleColor.Black;
-            //Console.Clear();
+            // set console size
+            int consoleWidthLimit = 79;
+            int consoleHeightLimit = 24;
+            Console.SetWindowSize(consoleWidthLimit + 2, consoleHeightLimit + 2);
+
+            string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
+            string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with three lives.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you lose all three lives.";
+
+            // main menu loop
+            bool startGame = false;
+            while (!startGame)
+            {
+                for (int i = 0; i < menuOptions.Length; i++)
+                {
+                    Console.SetCursorPosition(consoleWidthLimit / 3, consoleHeightLimit / 5 + (2 * i));
+                    Console.WriteLine((i+1) + ") " + menuOptions[i]);
+                }
+
+                consoleKey = Console.ReadKey(true);
+                switch (consoleKey.Key)
+                {
+                    case ConsoleKey.D1:
+                        startGame = true;
+                        break;
+                    case ConsoleKey.D2:
+                        // implement High score
+                        break;
+                    case ConsoleKey.D3:
+                        Console.Clear();
+                        Console.WriteLine(helpText);
+                        Console.SetCursorPosition(0, consoleHeightLimit);
+                        Console.WriteLine("Press any key to return back to the main menu.");
+                        Console.ReadKey();
+                        break;
+                    case ConsoleKey.D4:
+                        Environment.Exit(0);
+                        break;
+                }
+                Console.Clear();
+            }
 
             menuSoundPlayer.Play();
 
@@ -42,12 +77,8 @@ namespace SnakeGame
             Dictionary<int, int> obstacles = new Dictionary<int, int>();
 
             bool gamePause = false;
-            ConsoleKeyInfo consoleKey; // holds whatever key is pressed 
             //end game String (Win or Lose statement)
             String end_condition = "Game Over";
-
-            //initial score
-
 
             // pause game string
             string[] pauseMessage = new string[3] { "Paused!", "Press any key to resume", "Press ESC to quit" };
@@ -58,9 +89,7 @@ namespace SnakeGame
             // location info & display
             List<Point> snake = new List<Point> { new Point(0, 2), new Point(0, 2), new Point(0, 2) };
             int dx = 1, dy = 0;
-            int consoleWidthLimit = 79;
-            int consoleHeightLimit = 24;
-            Console.SetWindowSize(consoleWidthLimit+2, consoleHeightLimit+2);
+            
 
             System.Random random = new System.Random();
             //create random number for the obstacle within the console
