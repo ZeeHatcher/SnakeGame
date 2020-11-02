@@ -16,7 +16,6 @@
     <EmbeddedResource Include="hit.wav" />
     <EmbeddedResource Include="menu.wav" />
     <EmbeddedResource Include="pickup_normal.wav" />
-    <EmbeddedResource Include="pickup_special.wav" />
   </ItemGroup>
 
   <ItemGroup>
