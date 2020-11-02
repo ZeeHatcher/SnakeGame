@@ -30,29 +30,34 @@ namespace SnakeGame
             // set console size
             Console.SetWindowSize(consoleWidthLimit + 2, consoleHeightLimit + 2);
 
+            //Initialize text to print on screen
             string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
             string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with one life.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nGreen food heals you and gives you points when you are at max health\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you lose all three lives.";
 
-            // main menu loop
-            bool startGame = false;
-            while (!startGame)
+            //Main menu loop
+            bool exitGame = false;
+            while (!exitGame)
             {
+                //Show main menu text
                 for (int i = 0; i < menuOptions.Length; i++)
                 {
                     Console.SetCursorPosition(consoleWidthLimit / 3, consoleHeightLimit / 5 + (2 * i));
                     Console.WriteLine((i+1) + ") " + menuOptions[i]);
                 }
-
-                consoleKey = Console.ReadKey(true);
-
+                //Get user input
+                consoleKey = Console.ReadKey(true); 
+                
                 menuSoundPlayer.Play();
                 Console.Clear();
 
+                //Process user input
                 switch (consoleKey.Key)
                 {
+                    //Start game
                     case ConsoleKey.D1:
                         StartGame();
                         break;
+                    //Show highscore
                     case ConsoleKey.D2:
                         Console.WriteLine("--HIGHSCORE BOARD--");
                         try
@@ -73,17 +78,18 @@ namespace SnakeGame
                         Console.WriteLine("Press any key to return back to the main menu.");
                         Console.ReadKey();
                         break;
+                    //Show help screen
                     case ConsoleKey.D3:
                         Console.WriteLine(helpText);
                         Console.SetCursorPosition(0, consoleHeightLimit);
                         Console.WriteLine("Press any key to return back to the main menu.");
                         Console.ReadKey();
                         break;
+                    //Exit game
                     case ConsoleKey.D4:
-                        Environment.Exit(0);
+                        exitGame = true;
                         break;
                 }
-
                 Console.Clear();
             }
         }
