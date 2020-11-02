@@ -32,7 +32,7 @@ namespace SnakeGame
 
             //Initialize text to print on screen
             string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
-            string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with one life.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nGreen food heals you and gives you points when you are at max health\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you lose all three lives.";
+            string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with one life.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nGreen food heals you and gives you points when you are at max health\n\nEvery 3 points will make the game harder by incrementing the number of obstacles\nand increasing the snake speed.\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you run out of lives.";
 
             //Main menu loop
             bool exitGame = false;
