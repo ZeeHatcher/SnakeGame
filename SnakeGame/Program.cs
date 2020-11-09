@@ -55,10 +55,12 @@ namespace SnakeGame
                 {
                     //Start game
                     case ConsoleKey.D1:
+                    case ConsoleKey.NumPad1:
                         StartGame();
                         break;
                     //Show highscore
                     case ConsoleKey.D2:
+                    case ConsoleKey.NumPad2:
                         Console.WriteLine("--HIGHSCORE BOARD--");
                         try
                         {
@@ -80,6 +82,7 @@ namespace SnakeGame
                         break;
                     //Show help screen
                     case ConsoleKey.D3:
+                    case ConsoleKey.NumPad3:
                         Console.WriteLine(helpText);
                         Console.SetCursorPosition(0, consoleHeightLimit);
                         Console.WriteLine("Press any key to return back to the main menu.");
@@ -87,6 +90,7 @@ namespace SnakeGame
                         break;
                     //Exit game
                     case ConsoleKey.D4:
+                    case ConsoleKey.NumPad4:
                         exitGame = true;
                         break;
                 }
