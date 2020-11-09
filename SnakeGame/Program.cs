@@ -16,6 +16,7 @@ namespace SnakeGame
     {
         private static int consoleWidthLimit = 79;
         private static int consoleHeightLimit = 24;
+        private static int speedLimit = 30;
         private static ConsoleKeyInfo consoleKey; // holds whatever key is pressed
         private static SoundPlayer menuSoundPlayer, hitSoundPlayer;
 
@@ -139,7 +140,7 @@ namespace SnakeGame
             var timer = new System.Threading.Timer(state=>ChangePositions(), null, 0, seconds);
 
             // delay to slow down the character movement so you can see it
-            int delayInMillisecs = 100;
+            int delayInMillisecs = speedLimit;
 
             // whether to keep trails
             bool trail = false;
@@ -300,18 +301,11 @@ namespace SnakeGame
                         }
                      }
                 
-                obstacles.Add(x, y);
+                    obstacles.Add(x, y);
 
-                limit += 3;
-                if ((delayInMillisecs - 10) > 20)
-                {
-                    delayInMillisecs -= 10;
+                    limit += 3;
+                    delayInMillisecs = Math.Max(speedLimit, delayInMillisecs - 10);
                 }
-                else
-                {
-                    delayInMillisecs = 20;
-                }
-            }
 
 
                 //check winning condition
@@ -381,7 +375,7 @@ namespace SnakeGame
                     snake.Add(new Point(snake[snake.Count - 1]));
                     score += 2;
 
-                    delayInMillisecs = Math.Max(10, delayInMillisecs - 10);
+                    delayInMillisecs = Math.Max(speedLimit, delayInMillisecs - 10);
                 }
 
                 if (saviour.CheckCollision(snake))
