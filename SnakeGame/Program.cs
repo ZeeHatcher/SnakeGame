@@ -96,7 +96,6 @@ namespace SnakeGame
             Console.SetCursorPosition(0, CONSOLE_HEIGHT_LIMIT);
             Console.WriteLine("Press any key to return back to the main menu.");
             Console.ReadKey();
-
         }
 
         private static void ShowScoreBoard()
@@ -119,7 +118,6 @@ namespace SnakeGame
             }
             Console.WriteLine("\nPress any key to return back to the main menu.");
             Console.ReadKey();
-            return;
         }
 
         private static void StartGame()
