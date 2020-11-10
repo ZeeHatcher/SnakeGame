@@ -1,0 +1,18 @@
+Welcome to SnakeGame!
+
+*** 
+You are a snake with one life.
+
+Collect food σ to grow longer and earn a higher score.
+Golden food are worth twice as much, but also increases your speed.
+
+Green food heals you and gives you points when you are at max health
+
+Every 3 points will make the game harder by incrementing the number of obstacles
+and increasing the snake speed.
+
+Press the arrow keys to move up, down, left and right.
+Press escape to pause the game.
+
+Avoid obstacles ||. Crashing into them loses you one life.
+The game ends when you run out of lives.

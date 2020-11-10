@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="help_screen.txt" />
     <None Remove="hit.wav" />
     <None Remove="menu.wav" />
     <None Remove="pickup_normal.wav" />
@@ -13,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="help_screen.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="hit.wav" />
     <EmbeddedResource Include="menu.wav" />
     <EmbeddedResource Include="pickup_normal.wav" />
