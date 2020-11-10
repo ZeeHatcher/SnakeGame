@@ -91,7 +91,7 @@ namespace SnakeGame
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + ", Help screen unavailable.");
+                Console.WriteLine("Help screen unavailable.");
             }
             Console.SetCursorPosition(0, CONSOLE_HEIGHT_LIMIT);
             Console.WriteLine("Press any key to return back to the main menu.");
