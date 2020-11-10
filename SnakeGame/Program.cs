@@ -163,7 +163,7 @@ namespace SnakeGame
             var timer = new System.Threading.Timer(state => ChangePositions(), null, 0, seconds);
 
             // delay to slow down the character movement so you can see it
-            int delayInMillisecs = SPEED_LIMIT;
+            int delayInMillisecs = 100;
 
             // whether to keep trails
             bool trail = false;
