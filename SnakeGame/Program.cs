@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -124,8 +125,6 @@ namespace SnakeGame
 
         private static void StartGame()
         {
-            //display this char on the console as the obstacle
-            char obstacle = '|';
             //set the timer to 10 seconds
             int seconds = 10 * 1000;
             bool gameLive = true;
@@ -133,7 +132,7 @@ namespace SnakeGame
             //score threshold
             int limit = 2;
             int life = 1;
-            Dictionary<int, int> obstacles = new Dictionary<int, int>();
+            
 
             bool gamePause = false;
             //end game String (Win or Lose statement)
@@ -144,24 +143,24 @@ namespace SnakeGame
 
             // score
             int score = 0;
+            
+            //Obstacles location
+            List<Point> obstacles = new List<Point>();
 
             // location info & display
             List<Point> snake = new List<Point> { new Point(0, 2), new Point(0, 2), new Point(0, 2) };
             int dx = 1, dy = 0;
-
+           
             System.Random random = new System.Random();
             //create random number for the obstacle within the console
             //minus the width limit by 1 for space for the second character of the obstacle
             int obx = random.Next(CONSOLE_WIDTH_LIMIT - 1);
             int oby = random.Next(2, CONSOLE_HEIGHT_LIMIT);
-            obstacles.Add(obx, oby);
+            obstacles.Add(new Point(obx,oby));
 
             Food food = new Food(ConsoleColor.Red);
             Food specialFood = new Food(ConsoleColor.Yellow);
             Food saviour = new Food(ConsoleColor.Green);
-            //Spawns the food object
-            //food.Spawn(snake);
-            //specialFood.Spawn(snake
 
             var timer = new System.Threading.Timer(state => ChangePositions(), null, 0, seconds);
 
@@ -175,15 +174,12 @@ namespace SnakeGame
             void ChangePositions()
             {
                 //loop through the dictionary to clear all the obstacles
-                foreach (KeyValuePair<int, int> i in obstacles.ToArray())
+                foreach (Point i in obstacles)
                 {
-                    Console.SetCursorPosition(i.Key, i.Value);
+                    Console.SetCursorPosition(i.X, i.Y);
                     Console.Write(' ');
-                    Console.SetCursorPosition(i.Key + 1, i.Value);
+                    Console.SetCursorPosition(i.X + 1, i.Y);
                     Console.Write(' ');
-                    obstacles.Remove(i.Key);
-                    //i.Key = random.Next(consoleWidthLimit);
-                    //i.Value = random.Next(2, consoleHeightLimit);
 
                     int x = random.Next(CONSOLE_WIDTH_LIMIT);
                     int y = random.Next(2, CONSOLE_HEIGHT_LIMIT);
@@ -192,7 +188,7 @@ namespace SnakeGame
                     //generate a new position
                     foreach (Point p in snake)
                     {
-                        while (p.X == x || p.X == x + 1 || obstacles.ContainsKey(x))
+                        while (p.X == x || p.X == x + 1)
                         {
                             x = random.Next(CONSOLE_WIDTH_LIMIT - 1);
                         }
@@ -203,7 +199,8 @@ namespace SnakeGame
                         }
                     }
                     //replace the old positions with new positions
-                    obstacles.Add(x, y);
+                    i.X = x;
+                    i.Y = y;
                 }
 
                 //checks if the previous food is "eaten" by the snake
@@ -287,11 +284,11 @@ namespace SnakeGame
                 //check if the snake touched the obstacle
                 foreach (Point p in snake)
                 {
-                    foreach (KeyValuePair<int, int> i in obstacles.ToArray())
+                    foreach (Point i in obstacles)
                     {
-                        if (p.Y == i.Value)
+                        if (p.Y == i.Y)
                         {
-                            if (p.X == i.Key || p.X == i.Key + 1)
+                            if (p.X == i.X || p.X == i.X + 1)
                             {
                                 life -= 1;
                                 if (life == 0)
@@ -318,7 +315,7 @@ namespace SnakeGame
 
                     foreach (Point p in snake)
                     {
-                        while (p.X == x || p.X == x + 1 || obstacles.ContainsKey(x))
+                        while (p.X == x || p.X == x + 1)
                         {
                             x = random.Next(CONSOLE_WIDTH_LIMIT - 1);
                         }
@@ -329,7 +326,7 @@ namespace SnakeGame
                         }
                     }
 
-                    obstacles.Add(x, y);
+                    obstacles.Add(new Point(x, y));
 
                     limit += 3;
                     delayInMillisecs = Math.Max(SPEED_LIMIT, delayInMillisecs - 10);
@@ -429,6 +426,11 @@ namespace SnakeGame
                     p.Render();
                 }
 
+                foreach(Point p in obstacles)
+                {
+                    p.RenderObs();
+                }
+
                 // render the score
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.SetCursorPosition(CONSOLE_WIDTH_LIMIT / 4 * 3, 0);
@@ -437,15 +439,6 @@ namespace SnakeGame
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.SetCursorPosition(CONSOLE_WIDTH_LIMIT / 4 * 3 + 10, 0);
                 Console.Write("Life: " + life);
-
-                foreach (KeyValuePair<int, int> i in obstacles.ToArray())
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.SetCursorPosition(i.Key, i.Value);
-                    Console.Write(obstacle);
-                    Console.SetCursorPosition(i.Key + 1, i.Value);
-                    Console.Write(obstacle);
-                }
 
                 // pause to allow eyeballs to keep up
                 System.Threading.Thread.Sleep(delayInMillisecs);

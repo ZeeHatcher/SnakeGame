@@ -51,5 +51,14 @@ namespace SnakeGame
             Console.SetCursorPosition(x, y);
             Console.Write("*");
         }
+
+        public virtual void RenderObs()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.SetCursorPosition(x, y);
+            Console.Write("|");
+            Console.SetCursorPosition(x+1, y);
+            Console.Write("|");
+        }
     }
 }
