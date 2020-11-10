@@ -14,6 +14,7 @@ namespace SnakeGame
         private static int CONSOLE_WIDTH_LIMIT = 79;
         private static int CONSOLE_HEIGHT_LIMIT = 24;
         private static int SPEED_LIMIT = 30;
+
         private static ConsoleKeyInfo consoleKey; // holds whatever key is pressed
         private static SoundPlayer menuSoundPlayer, hitSoundPlayer;
 
@@ -92,12 +93,11 @@ namespace SnakeGame
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + ", Help screen unavailable.");
+                Console.WriteLine("Help screen unavailable.");
             }
             Console.SetCursorPosition(0, CONSOLE_HEIGHT_LIMIT);
             Console.WriteLine("Press any key to return back to the main menu.");
             Console.ReadKey();
-
         }
 
         private static void ShowScoreBoard()
@@ -120,7 +120,6 @@ namespace SnakeGame
             }
             Console.WriteLine("\nPress any key to return back to the main menu.");
             Console.ReadKey();
-            return;
         }
 
         private static void StartGame()
@@ -158,6 +157,7 @@ namespace SnakeGame
             int oby = random.Next(2, CONSOLE_HEIGHT_LIMIT);
             obstacles.Add(new Point(obx,oby));
 
+            //Spawns the food objects
             Food food = new Food(ConsoleColor.Red);
             Food specialFood = new Food(ConsoleColor.Yellow);
             Food saviour = new Food(ConsoleColor.Green);
@@ -165,7 +165,7 @@ namespace SnakeGame
             var timer = new System.Threading.Timer(state => ChangePositions(), null, 0, seconds);
 
             // delay to slow down the character movement so you can see it
-            int delayInMillisecs = SPEED_LIMIT;
+            int delayInMillisecs = 100;
 
             // whether to keep trails
             bool trail = false;
