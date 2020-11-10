@@ -13,6 +13,7 @@ namespace SnakeGame
         private static int CONSOLE_WIDTH_LIMIT = 79;
         private static int CONSOLE_HEIGHT_LIMIT = 24;
         private static int SPEED_LIMIT = 30;
+
         private static ConsoleKeyInfo consoleKey; // holds whatever key is pressed
         private static SoundPlayer menuSoundPlayer, hitSoundPlayer;
 
@@ -125,12 +126,10 @@ namespace SnakeGame
             int oby = random.Next(2, CONSOLE_HEIGHT_LIMIT);
             obstacles.Add(obx, oby);
 
+            //Spawns the food objects
             Food food = new Food(ConsoleColor.Red);
             Food specialFood = new Food(ConsoleColor.Yellow);
             Food saviour = new Food(ConsoleColor.Green);
-            //Spawns the food object
-            //food.Spawn(snake);
-            //specialFood.Spawn(snake
 
             var timer = new System.Threading.Timer(state => ChangePositions(), null, 0, seconds);
 
