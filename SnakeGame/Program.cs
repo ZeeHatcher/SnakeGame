@@ -29,8 +29,7 @@ namespace SnakeGame
 
             //Initialize text to print on screen
             string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
-            string helpText = "Welcome to SnakeGame!\n\n *** \nYou are a snake with one life.\n\nCollect food σ to grow longer and earn a higher score.\nGolden food are worth twice as much, but also increases your speed.\n\nGreen food heals you and gives you points when you are at max health\n\nEvery 3 points will make the game harder by incrementing the number of obstacles\nand increasing the snake speed.\n\nPress the arrow keys to move up, down, left and right.\nPress escape to pause the game.\n\nAvoid obstacles ||. Crashing into them loses you one life.\nThe game ends when you run out of lives.";
-
+            
             //Main menu loop
             bool exitGame = false;
             while (!exitGame)
@@ -80,7 +79,22 @@ namespace SnakeGame
                     //Show help screen
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
-                        Console.WriteLine(helpText);
+                        try
+                        {
+                            // Get text for help screen
+                            StreamReader sr = new StreamReader(assembly.GetManifestResourceStream("SnakeGame.help_screen.txt"));
+                            String line = sr.ReadLine();
+                            while (line != null)
+                            {
+                                Console.WriteLine(line);
+                                line = sr.ReadLine();
+                            }
+                            sr.Close();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message + ", Help screen unavailable.");
+                        }
                         Console.SetCursorPosition(0, CONSOLE_HEIGHT_LIMIT);
                         Console.WriteLine("Press any key to return back to the main menu.");
                         Console.ReadKey();
