@@ -58,47 +58,12 @@ namespace SnakeGame
                     //Show highscore
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
-                        Console.WriteLine("--HIGHSCORE BOARD--");
-                        try
-                        {
-                            StreamReader sr = new StreamReader("highscore.txt");
-                            String line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                Console.WriteLine(line);
-                                line = sr.ReadLine();
-                            }
-                            sr.Close();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("No scores available currently.");
-                        }
-                        Console.WriteLine("Press any key to return back to the main menu.");
-                        Console.ReadKey();
+                        ShowScoreBoard();
                         break;
                     //Show help screen
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
-                        try
-                        {
-                            // Get text for help screen
-                            StreamReader sr = new StreamReader(assembly.GetManifestResourceStream("SnakeGame.help_screen.txt"));
-                            String line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                Console.WriteLine(line);
-                                line = sr.ReadLine();
-                            }
-                            sr.Close();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message + ", Help screen unavailable.");
-                        }
-                        Console.SetCursorPosition(0, CONSOLE_HEIGHT_LIMIT);
-                        Console.WriteLine("Press any key to return back to the main menu.");
-                        Console.ReadKey();
+                        ShowHelpScreen();
                         break;
                     //Exit game
                     case ConsoleKey.D4:
@@ -108,6 +73,52 @@ namespace SnakeGame
                 }
                 Console.Clear();
             }
+        }
+
+        private static void ShowHelpScreen()
+        {
+            try
+            {
+                //Get text for help screen
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                StreamReader sr = new StreamReader(assembly.GetManifestResourceStream("SnakeGame.help_screen.txt"));
+                String line = sr.ReadLine();
+                while (line != null)
+                {
+                    Console.WriteLine(line);
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Help screen unavailable.");
+            }
+            Console.SetCursorPosition(0, CONSOLE_HEIGHT_LIMIT);
+            Console.WriteLine("Press any key to return back to the main menu.");
+            Console.ReadKey();
+        }
+
+        private static void ShowScoreBoard()
+        {
+            Console.WriteLine("--HIGHSCORE BOARD--");
+            try
+            {
+                StreamReader sr = new StreamReader("highscore.txt");
+                String line = sr.ReadLine();
+                while (line != null)
+                {
+                    Console.WriteLine(line);
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("No scores available currently.");
+            }
+            Console.WriteLine("\nPress any key to return back to the main menu.");
+            Console.ReadKey();
         }
 
         private static void StartGame()
