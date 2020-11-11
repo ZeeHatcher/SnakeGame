@@ -6,6 +6,7 @@ using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace SnakeGame
 {
@@ -31,7 +32,7 @@ namespace SnakeGame
 
             //Initialize text to print on screen
             string[] menuOptions = new string[4] { "Play", "High Score", "Help", "Quit" };
-            
+
             //Main menu loop
             bool exitGame = false;
             while (!exitGame)
@@ -173,60 +174,66 @@ namespace SnakeGame
             //function called by timer to change the positions of obstacles, food as well as special food
             void ChangePositions()
             {
-                //loop through the dictionary to clear all the obstacles
-                foreach (Point i in obstacles)
+                //checks if the game is paused
+                //if paused, does not change the positions
+                if (!gamePause)
                 {
-                    Console.SetCursorPosition(i.X, i.Y);
-                    Console.Write(' ');
-                    Console.SetCursorPosition(i.X + 1, i.Y);
-                    Console.Write(' ');
-
-                    int x = random.Next(CONSOLE_WIDTH_LIMIT);
-                    int y = random.Next(2, CONSOLE_HEIGHT_LIMIT);
-
-                    //if the newly generated random position clashes with the snake
-                    //generate a new position
-                    foreach (Point p in snake)
+                    //loop through the dictionary to clear all the obstacles
+                    foreach (Point i in obstacles)
                     {
-                        while (p.X == x || p.X == x + 1)
-                        {
-                            x = random.Next(CONSOLE_WIDTH_LIMIT - 1);
-                        }
+                        Console.SetCursorPosition(i.X, i.Y);
+                        Console.Write(' ');
+                        Console.SetCursorPosition(i.X + 1, i.Y);
+                        Console.Write(' ');
 
-                        while (p.Y == y)
+                        int x = random.Next(CONSOLE_WIDTH_LIMIT);
+                        int y = random.Next(2, CONSOLE_HEIGHT_LIMIT);
+
+                        //if the newly generated random position clashes with the snake
+                        //generate a new position
+                        foreach (Point p in snake)
                         {
-                            y = random.Next(2, CONSOLE_HEIGHT_LIMIT);
+                            while (p.X == x || p.X == x + 1)
+                            {
+                                x = random.Next(CONSOLE_WIDTH_LIMIT - 1);
+                            }
+
+                            while (p.Y == y)
+                            {
+                                y = random.Next(2, CONSOLE_HEIGHT_LIMIT);
+                            }
                         }
+                        //replace the old positions with new positions
+                        i.X = x;
+                        i.Y = y;
                     }
-                    //replace the old positions with new positions
-                    i.X = x;
-                    i.Y = y;
-                }
 
-                //checks if the previous food is "eaten" by the snake
-                //if not, the food will be cleared and a new food would be spawned
-                if (!food.CheckCollision(snake))
-                {
-                    Console.SetCursorPosition(food.X, food.Y);
-                    Console.Write(' ');
-                }
 
-                if (!specialFood.CheckCollision(snake))
-                {
-                    Console.SetCursorPosition(specialFood.X, specialFood.Y);
-                    Console.Write(' ');
-                }
+                    //checks if the previous food is "eaten" by the snake
+                    //if not, the food will be cleared and a new food would be spawned
+                    if (!food.CheckCollision(snake))
+                    {
+                        Console.SetCursorPosition(food.X, food.Y);
+                        Console.Write(' ');
+                    }
 
-                if (!saviour.CheckCollision(snake))
-                {
-                    Console.SetCursorPosition(saviour.X, saviour.Y);
-                    Console.Write(' ');
-                }
+                    if (!specialFood.CheckCollision(snake))
+                    {
+                        Console.SetCursorPosition(specialFood.X, specialFood.Y);
+                        Console.Write(' ');
+                    }
 
-                //spawn the food object
-                food.Spawn(snake);
-                specialFood.Spawn(snake);
-                saviour.Spawn(snake);
+                    if (!saviour.CheckCollision(snake))
+                    {
+                        Console.SetCursorPosition(saviour.X, saviour.Y);
+                        Console.Write(' ');
+                    }
+
+                    //spawn the food object
+                    food.Spawn(snake);
+                    specialFood.Spawn(snake);
+                    saviour.Spawn(snake);
+                }
             }
 
             do // until escape
@@ -378,7 +385,7 @@ namespace SnakeGame
                         }
                         break;
                     }
-                }
+                }                
 
                 //check winning condition
                 if (score >= 20)
@@ -444,7 +451,7 @@ namespace SnakeGame
                 System.Threading.Thread.Sleep(delayInMillisecs);
 
                 while (gamePause)
-                {
+                {   
                     Console.ForegroundColor = ConsoleColor.White;
 
                     for (int i = 0; i < pauseMessage.Length; i++)
