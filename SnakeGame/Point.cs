@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SnakeGame
 {
-    class Point
+    public class Point
     {
         protected int x, y;
 
