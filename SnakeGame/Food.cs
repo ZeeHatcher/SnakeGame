@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace SnakeGame
 {
-    class Food : Point
+    public class Food : Point
     {
         private int counter = 0;
         private ConsoleColor color;
